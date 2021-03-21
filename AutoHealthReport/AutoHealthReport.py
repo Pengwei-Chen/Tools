@@ -49,8 +49,11 @@ getArea()
 selection = browser.find_element_by_class_name("list-box")
 selection.find_element_by_class_name("footers").find_elements_by_tag_name("a")[0].click()
 
-confirm = browser.find_element_by_class_name("wapcf-btn-ok")
-confirm.click()
+try:
+    confirm = browser.find_element_by_class_name("wapcf-btn-ok")
+    confirm.click()
+except:
+    pass
 
 #Close
 browser.quit()
