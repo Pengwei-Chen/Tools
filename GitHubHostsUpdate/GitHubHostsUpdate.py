@@ -14,7 +14,10 @@ def generate_text():
     hosts.close()
     pattern = r'#github\n\d+\.\d+\.\d+\.\d+ github.com\n\d+\.\d+\.\d+\.\d+ github.global.ssl.fastly.net'
     updated_pattern = '#github\n' + get_IP_Address("http://github.com.ipaddress.com/") + " github.com\n" + get_IP_Address("http://github.global.ssl.fastly.net.ipaddress.com/") + " github.global.ssl.fastly.net"
-    text = re.sub(pattern, updated_pattern, text)
+    if(re.findall(pattern, text) != []):
+        text = re.sub(pattern, updated_pattern, text)
+    else:
+        text = text + "\n" + updated_pattern;
     return(text)
 
 def update_Hosts(name, text):
