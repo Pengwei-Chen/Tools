@@ -58,8 +58,9 @@ for i in range(len(option[0])):
 def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
+    start_time = time.time()
     while True:
-        if selection.find_elements_by_tag_name("input")[0] != "":
+        if selection.find_elements_by_tag_name("input")[0].text != "" or time.time() - start_time >= 2:
             break
 getArea()
 
