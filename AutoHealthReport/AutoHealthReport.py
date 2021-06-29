@@ -60,7 +60,7 @@ def getArea():
     selection.click()
     start_time = time.time()
     while True:
-        if selection.find_elements_by_tag_name("input")[0].text != "":
+        if selection.find_element_by_tag_name("input").get_attribute("value") != "":
             break
         elif time.time() - start_time >= 20:
             browser.find_element_by_class_name("wapat-btn-ok").click()
