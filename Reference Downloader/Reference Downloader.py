@@ -127,10 +127,8 @@ if ddmDocTitle.text == article_title:
                 if window_handle != main_window_handle:
                     driver.switch_to.window(window_handle)
                     try:
-                        title = driver.find_element_by_xpath('//*[@id="screen-reader-main-title"]/span').text
-                        driver.find_element_by_xpath('//*[@id="screen-reader-main-content"]/div[2]/div[1]/ul/li[1]/a').click()
-                        driver.find_element_by_xpath('//*[@id="save-pdf-icon-button"]').click()
-                        driver.close()
+                        link = driver.find_element_by_xpath('//*[@id="screen-reader-main-content"]/div[2]/div[1]/ul/li[1]/a').get_attribute("href")
+                        driver.get(link)
                     except:
                         pass
             break
