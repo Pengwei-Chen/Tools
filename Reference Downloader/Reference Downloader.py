@@ -1,4 +1,5 @@
 from selenium import webdriver
+from pyshadow.main import Shadow
 import requests
 import re
 import os
@@ -75,22 +76,61 @@ options = webdriver.ChromeOptions()
 prefs = {"download.default_directory" : downloads_folder.replace("/", "\\")}
 options.add_extension(directory + "Scopus Document Download Manager_3.20_0.crx")
 options.add_experimental_option("prefs", prefs)
-browser = webdriver.Chrome(options = options)
-browser.get("https://www.scopus.com/search/form.uri?display=basic#basic")
-browser.implicitly_wait(15)
+driver = webdriver.Chrome(options = options)
+driver.get("https://www.scopus.com/search/form.uri?display=basic#basic")
+driver.implicitly_wait(10)
 
-els_input = browser.find_element_by_class_name("els-input")
+els_input = driver.find_element_by_class_name("els-input")
 els_input.click()
 els_input.find_element_by_class_name("flex-grow-1").send_keys(article_title)
-browser.find_element_by_class_name(
-    "DocumentSearchForm-module__1S2LH").find_elements_by_class_name(
-        "DocumentSearchForm-module__1S2LH")[1].find_elements_by_tag_name("button")[2].click()
-ddmDocTitle = browser.find_element_by_class_name("ddmDocTitle")
+driver.find_element_by_xpath('//*[@id="documents-tab-panel"]/div/form/div[2]/div[2]/button').click()
+while True:
+    ddmDocTitle = driver.find_element_by_xpath('//*[@id="resultDataRow0"]/td[1]/a')
+    if ddmDocTitle.text != "":
+        break
 if ddmDocTitle.text == article_title:
     ddmDocTitle.click()
-    browser.find_element_by_id("referenceSrhResults").click()
-    browser.find_element_by_xpath('//*[@id="resultsPerPage-button"]/span[1]').click()
-    browser.find_element_by_id("ui-id-4").click()
-    browser.find_element_by_id("selectAllCheck").click()
-    browser.find_element_by_xpath('//*[@id="btnToolbar"]/span/micro-ui/scopus-search-results-download/els-button').click()
-    browser.find_element_by_id("btnDDMDownloadStart").click()
+    driver.find_element_by_xpath('//*[@id="referenceSrhResults"]/span[1]').click()
+    try:
+        driver.find_element_by_xpath('//*[@id="resultsPerPage-button"]/span[1]').click()
+    except:
+        driver.find_element_by_xpath('//*[@id="referenceSrhResults"]/span[1]').click()
+        driver.find_element_by_xpath('//*[@id="resultsPerPage-button"]/span[1]').click()
+    driver.find_element_by_id("ui-id-4").click()
+    driver.find_element_by_id("selectAllCheck").click()
+    driver.find_element_by_xpath('//*[@id="btnToolbar"]/span/micro-ui/scopus-search-results-download/els-button').click()
+    start_button = driver.find_element_by_id("btnDDMDownloadStart")
+    while start_button.get_attribute('disabled') != "true":
+        try:
+            start_button.click()
+        except:
+            pass
+    main_window_handle = driver.current_window_handle
+    driver.execute_script('window.open()')
+    all_window_handles = driver.window_handles
+    for window_handle in all_window_handles:
+        if window_handle != main_window_handle:
+            driver.switch_to.window(window_handle)
+            driver.get("chrome://settings/content/pdfDocuments")
+            shadow = Shadow(driver)
+            shadow.find_element("#radioCollapse").click()
+    driver.close()
+    driver.switch_to.window(main_window_handle)
+    while True:
+        if driver.find_element_by_xpath('//*[@id="btnDDMDownloadComplete"]/span').text == "Done":
+            publisher_sites = driver.find_elements_by_xpath('//*[@id="ddmVAPStatus"]/a')
+            publisher_sites = publisher_sites[:-1]
+            for publisher_site in publisher_sites:
+                publisher_site.click()
+            all_window_handles = driver.window_handles
+            for window_handle in all_window_handles:
+                if window_handle != main_window_handle:
+                    driver.switch_to.window(window_handle)
+                    try:
+                        title = driver.find_element_by_xpath('//*[@id="screen-reader-main-title"]/span').text
+                        driver.find_element_by_xpath('//*[@id="screen-reader-main-content"]/div[2]/div[1]/ul/li[1]/a').click()
+                        driver.find_element_by_xpath('//*[@id="save-pdf-icon-button"]').click()
+                        driver.close()
+                    except:
+                        pass
+            break
