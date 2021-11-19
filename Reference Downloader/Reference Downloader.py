@@ -4,14 +4,20 @@ import re
 import os
 import zipfile
 import winreg
+import sys
 
-directory = __file__[:-23]
+directory = repr(os.path.dirname(os.path.realpath(sys.argv[0]))).strip("'").replace("\\\\", "/") + "/"
 
 
 
 ###########################################################################################
 #Article Title"
-article_title = "Human Primordial Germ Cells Are Specified from Lineage-Primed Progenitors"
+article_title = input()
+while True:
+    line = input()
+    if line == "":
+        break
+    article_title += " " + line
 
 #Downloads Folder
 downloads_folder = directory + article_title
@@ -43,21 +49,22 @@ def get_path():
 
 def download_driver(download_url):
     file = requests.get(download_url)
-    with open(directory + "/chromedriver.zip", 'wb') as zip_file:
+    with open(directory + "chromedriver.zip", 'wb') as zip_file:
         zip_file.write(file.content)
 
 def unzip_driver(path):
-    f = zipfile.ZipFile(directory + "/chromedriver.zip",'r')
+    f = zipfile.ZipFile(directory + "chromedriver.zip",'r')
     for file in f.namelist():
         f.extract(file, path)
 
 url = 'http://npm.taobao.org/mirrors/chromedriver/'
-driver_version = get_driver_version()
 chrome_version = get_chrome_version()
+driver_version = get_driver_version()
 if driver_version != chrome_version:
     version_list = get_version_list(url)
     if chrome_version not in version_list:
         version_list.append(chrome_version)
+        version_list = sorted(version_list)
         chrome_version = version_list[version_list.index(chrome_version) - 1]
     download_url = url + chrome_version + '/chromedriver_win32.zip'
     download_driver(download_url)
@@ -65,7 +72,7 @@ if driver_version != chrome_version:
     unzip_driver(path)
 
 options = webdriver.ChromeOptions()
-prefs = {"download.default_directory":downloads_folder}
+prefs = {"download.default_directory" : downloads_folder}
 options.add_extension(directory + "Scopus Document Download Manager_3.20_0.crx")
 options.add_experimental_option("prefs", prefs)
 browser = webdriver.Chrome(options = options)
