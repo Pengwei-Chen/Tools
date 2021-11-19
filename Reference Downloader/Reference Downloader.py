@@ -72,7 +72,7 @@ if driver_version != chrome_version:
     unzip_driver(path)
 
 options = webdriver.ChromeOptions()
-prefs = {"download.default_directory" : downloads_folder}
+prefs = {"download.default_directory" : downloads_folder.replace("/", "\\")}
 options.add_extension(directory + "Scopus Document Download Manager_3.20_0.crx")
 options.add_experimental_option("prefs", prefs)
 browser = webdriver.Chrome(options = options)
