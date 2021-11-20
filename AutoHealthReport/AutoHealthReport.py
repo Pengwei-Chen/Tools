@@ -7,6 +7,7 @@ import os
 import zipfile
 import winreg
 import sys
+import subprocess
 
 ##########################
 #Enter your username here#
@@ -53,7 +54,11 @@ def get_chrome_version():
     return _v
 
 def get_driver_version():
-    outstd = os.popen('chromedriver --version').read()
+    outstd = str(subprocess.Popen('chromedriver --version',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
     return outstd.split(' ')[1]
 
 def get_version_list(url):
@@ -66,7 +71,11 @@ def get_version_list(url):
     return version_list
 
 def get_path():
-    outstd = os.popen('where chromedriver').read()
+    outstd = str(subprocess.Popen('where chromedriver',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
     return outstd.strip('chromedriver.exe\n')
 
 def download_driver(download_url):
@@ -103,10 +112,15 @@ browser.implicitly_wait(5)
 browser.find_element_by_name("username").send_keys(username)
 browser.find_element_by_name("password").send_keys(password)
 browser.find_element_by_id("dl").click()
+try:
+    browser.find_element_by_name(option[1][0]).find_elements_by_tag_name("span")[1]
+except:
+    browser.find_element_by_name("username").send_keys(username)
+    browser.find_element_by_name("password").send_keys(password)
+    browser.find_element_by_id("dl").click()
 
 #Report
 option[0] = ["sfqrxxss"] #Agreement at the end, no need to change
-
 for i in range(1, len(option)):
     for j in range(len(option[i])):
         browser.find_element_by_name(option[i][j]).find_elements_by_tag_name("span")[2*i-1].click()
