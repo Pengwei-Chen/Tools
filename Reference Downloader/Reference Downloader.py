@@ -6,6 +6,7 @@ import os
 import zipfile
 import winreg
 import sys
+import subprocess
 
 directory = repr(os.path.dirname(os.path.realpath(sys.argv[0]))).strip("'").replace("\\\\", "/") + "/"
 
@@ -32,7 +33,11 @@ def get_chrome_version():
     return _v
 
 def get_driver_version():
-    outstd = os.popen('chromedriver --version').read()
+    outstd = str(subprocess.Popen('chromedriver --version',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
     return outstd.split(' ')[1]
 
 def get_version_list(url):
@@ -45,7 +50,11 @@ def get_version_list(url):
     return version_list
 
 def get_path():
-    outstd = os.popen('where chromedriver').read()
+    outstd = str(subprocess.Popen('where chromedriver',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
     return outstd.strip('chromedriver.exe\n')
 
 def download_driver(download_url):
