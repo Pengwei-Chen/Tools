@@ -129,8 +129,11 @@ if ddmDocTitle.text == article_title:
         if driver.find_element_by_xpath('//*[@id="btnDDMDownloadComplete"]/span').text == "Done":
             publisher_sites = driver.find_elements_by_xpath('//*[@id="ddmVAPStatus"]/a')
             publisher_sites = publisher_sites[:-1]
+            for i in range(len(publisher_sites)):
+                publisher_sites[i] = publisher_sites[i].get_attribute("href")
+            driver.implicitly_wait(1)
             for publisher_site in publisher_sites:
-                publisher_site.click()
+                driver.execute_script('window.open("' + publisher_site+ '")')
             all_window_handles = driver.window_handles
             for window_handle in all_window_handles:
                 if window_handle != main_window_handle:
