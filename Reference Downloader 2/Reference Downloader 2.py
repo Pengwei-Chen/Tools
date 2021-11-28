@@ -128,7 +128,7 @@ if ddmDocTitle.text == article_title:
             splited_doi = doi.split("/")
             if len(splited_doi) == 3:
                 doi = splited_doi[0] + "/" + splited_doi[1] + r"%252F" + splited_doi[2]
-            half_doi = doi.split("/")[1]
+            half_doi = splited_doi[1]
             title = reference.find_element_by_class_name("refDocTitle").find_element_by_tag_name("a").text
             if title == None:
                 title = ""
