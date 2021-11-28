@@ -128,7 +128,7 @@ if ddmDocTitle.text == article_title:
                 doi = splited_doi[0] + "/" + splited_doi[1] + r"%252F" + splited_doi[2]
             doi = doi.replace("(", "%2528")
             doi = doi.replace(")", "%2529")
-            half_doi = doi.split("/")[1]
+            half_doi = doi.split("/")[1].lower()
             title = reference.find_element_by_class_name("refDocTitle").find_element_by_tag_name("a").text
             if title == None:
                 title = ""
@@ -168,7 +168,7 @@ if ddmDocTitle.text == article_title:
             break
         time.sleep(0.3)
     for file in files:
-        key = re.sub(r" \(\d+\)", "", file[:-4]).replace(r"%", r"%25")
+        key = re.sub(r" \(\d+\)", "", file[:-4]).replace(r"%", r"%25").lower()
         information = papers[key]
         rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
                                         information[2],information[3],information[4],information[5]), 0)
