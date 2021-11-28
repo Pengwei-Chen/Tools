@@ -1,9 +1,0 @@
-Selenium
-pyshadow
-requests
-re
-os
-zipfile
-winreg
-sys
-subprocess
