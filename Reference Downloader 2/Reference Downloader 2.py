@@ -165,8 +165,28 @@ if ddmDocTitle.text == article_title:
             papers[half_doi] = [doi, title, first_author, first_author_surname, year, journal]
     for paper in list(papers.values()):
         driver.execute_script('window.open("https://sci.bban.top/pdf/' + paper[0] + '.pdf?download=true")')
-    while len(driver.window_handles) != 1:
-        time.sleep(0.3)
+    driver.implicitly_wait(0.5)
+    time.sleep(5)
+    while True:
+        windows = driver.window_handles
+        if len(windows) == 1:
+            break
+        for i in range(len(windows) - 1, 0, -1):
+            try:
+                window = windows[i]
+                driver.switch_to.window(window)
+                if driver.find_element_by_xpath("/html/body/center[1]/h1").text == "404 Not Found":
+                    new_url = "https://sci-hub.mksa.top/" + driver.current_url.lstrip("https://sci.bban.top/pdf/").rstrip('.pdf?download=true")')
+                    new_url = new_url.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
+                    driver.get(new_url)
+                    try:
+                        driver.find_element_by_xpath('//*[@id="buttons"]/ul/li[2]/a').click()
+                    except:
+                        driver.find_element_by_xpath('//*[@id="buttons"]/button').click()
+                    time.sleep(2)
+                    driver.close()
+            except:
+                pass
     while True:
         downloaded = True
         for root, dirs, files in os.walk(downloads_folder):
@@ -182,6 +202,7 @@ if ddmDocTitle.text == article_title:
         time.sleep(0.3)
     for file in files:
         key = re.sub(r" \(\d+\)", "", file[:-4]).replace(r"%", r"%25").lower()
-        information = papers[key]
-        rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
-                                        information[2],information[3],information[4],information[5]), 0)
+        information = papers.get(key)
+        if information != None:
+            rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
+                                                information[2],information[3],information[4],information[5]), 0)
