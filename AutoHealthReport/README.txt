@@ -24,7 +24,7 @@
 
 4. 抄代码
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
-下载User Version（翻墙）
+（翻墙）
 输入学号和密码
 并检查选项
 我选的是有意向接种、适宜接种、*未接种*、在校、无入境情况
