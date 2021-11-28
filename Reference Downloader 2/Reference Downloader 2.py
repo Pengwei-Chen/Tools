@@ -56,7 +56,7 @@ def get_version_list(url):
         version_list.append(version)
     return version_list
 
-def get_path():
+def get_driver_path():
     outstd = str(subprocess.Popen('where chromedriver',
                                 shell = True,
                                 stdin = subprocess.PIPE,
@@ -68,6 +68,14 @@ def download_driver(download_url):
     file = requests.get(download_url)
     with open(directory + "chromedriver.zip", 'wb') as zip_file:
         zip_file.write(file.content)
+
+def get_python_path():
+    outstd = str(subprocess.Popen('where python',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
+    return outstd.lstrip("b").strip("'").rstrip("\\r\\n").strip('python.exe')
 
 def unzip_driver(path):
     f = zipfile.ZipFile(directory + "chromedriver.zip",'r')
@@ -86,7 +94,10 @@ def rename(name1, name2, n):
 
 url = 'http://npm.taobao.org/mirrors/chromedriver/'
 chrome_version = get_chrome_version()
-driver_version = get_driver_version()
+try:
+    driver_version = get_driver_version()
+except IndexError:
+    driver_version = ""
 if driver_version != chrome_version:
     version_list = get_version_list(url)
     if chrome_version not in version_list:
@@ -95,7 +106,9 @@ if driver_version != chrome_version:
         chrome_version = version_list[version_list.index(chrome_version) - 1]
     download_url = url + chrome_version + '/chromedriver_win32.zip'
     download_driver(download_url)
-    path = get_path()
+    path = get_driver_path()
+    if path == "b''":
+        path = get_python_path()
     unzip_driver(path)
 
 options = webdriver.ChromeOptions()
