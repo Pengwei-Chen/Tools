@@ -116,14 +116,15 @@ while True:
 if ddmDocTitle.text == article_title:
     ddmDocTitle.click()
     references = driver.find_elements_by_class_name("refCont")
-    time.sleep(1)
+    time.sleep(0.3)
     references = driver.find_elements_by_class_name("refCont")
     papers = {}
     for reference in references:
         doi = re.search(r"doi: (.*)", reference.text)
         if doi != None:
             doi = doi.group(1)
-            doi = doi.lower()
+            if re.search(r"/[A-Z]{3,}", doi) != None:
+                doi = doi.lower()
             splited_doi = doi.split("/")
             if len(splited_doi) == 3:
                 doi = splited_doi[0] + "/" + splited_doi[1] + r"%252F" + splited_doi[2]
@@ -134,6 +135,8 @@ if ddmDocTitle.text == article_title:
             if len(title) > 50:
                 title = title[0:50]
             first_author = re.search(r"(.*?,.*?),", reference.find_element_by_class_name("refAuthorTitle").text)
+            if first_author == None:
+                first_author = re.search(r"(.*?,.*?)\.", reference.find_element_by_class_name("refAuthorTitle").text)
             if first_author != None:
                 first_author = first_author.group(1)
             else:
@@ -154,12 +157,16 @@ if ddmDocTitle.text == article_title:
     while True:
         downloaded = True
         for root, dirs, files in os.walk(downloads_folder):
+            if len(files) != len(papers):
+                downloaded = False
+                break
             for file in files:
                 if re.search(r".crdownload", file) != None:
                     downloaded = False
                     break
         if downloaded:
             break
+        time.sleep(0.3)
     for file in files:
         key = re.sub(r" \(\d+\)", "", file[:-4]).replace(r"%2F", r"%252F")
         information = papers[key]
