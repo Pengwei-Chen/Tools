@@ -1,13 +1,9 @@
 引文下载小工具
 功能：利用Scopus数据库批量下载文献所有引文
 
-环境配置：Chrome浏览器、Python、依赖库
+环境配置：Chrome浏览器、Python
 1.	下载Chrome浏览器
 2.	安装Python，一定要勾选Add Python to PATH！！！
-3.	通过Python快捷方式或者where python命令，找到安装目录下的Scripts文件夹
-举个例子：
-C:\Users\$用户名\AppData\Local\Programs\Python\Python310\Scripts
-4.	打开命令行，cd到Scripts文件夹，用“pip install selenium”和“pip install request”安装一下依赖库
 
 使用：
 1.	运行Reference Downloader的可执行文件
