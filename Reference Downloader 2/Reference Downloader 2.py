@@ -1,3 +1,4 @@
+import selenium
 from selenium import webdriver
 import requests
 import re
@@ -132,6 +133,7 @@ if ddmDocTitle.text == article_title:
     time.sleep(0.3)
     references = driver.find_elements_by_class_name("refCont")
     papers = {}
+    unavailable = []
     for reference in references:
         doi = re.search(r"doi: (.*)", reference.text)
         if doi != None:
@@ -175,22 +177,32 @@ if ddmDocTitle.text == article_title:
             try:
                 window = windows[i]
                 driver.switch_to.window(window)
-                if driver.find_element_by_xpath("/html/body/center[1]/h1").text == "404 Not Found":
-                    new_url = "https://sci-hub.mksa.top/" + driver.current_url.lstrip("https://sci.bban.top/pdf/").rstrip('.pdf?download=true")')
-                    new_url = new_url.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
-                    driver.get(new_url)
-                    try:
-                        driver.find_element_by_xpath('//*[@id="buttons"]/ul/li[2]/a').click()
-                    except:
-                        driver.find_element_by_xpath('//*[@id="buttons"]/button').click()
-                    time.sleep(2)
-                    driver.close()
-            except:
+                try:
+                    if driver.find_element_by_xpath("/html/body/center[1]/h1").text == "404 Not Found":
+                        new_url = "https://sci-hub.mksa.top/" + driver.current_url.lstrip("https://sci.bban.top/pdf/").rstrip('.pdf?download=true")')
+                        new_url = new_url.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
+                        driver.get(new_url)
+                        try:
+                            driver.find_element_by_xpath('//*[@id="buttons"]/ul/li[2]/a').click()
+                        except:
+                            driver.find_element_by_xpath('//*[@id="buttons"]/button').click()
+                        driver.close()
+                except:
+                    pass
+                try:
+                    if driver.find_element_by_xpath('//*[@id="first"]/h1[1]/p[1]').text == "扫码关注公众号 可发布文献求助 并获取此篇文献":
+                        new_url = "https://doi.org/" + driver.current_url.lstrip("https://sci-hub.mksa.top/")
+                        new_url = new_url.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
+                        unavailable.append(new_url)
+                        driver.close()
+                except:
+                    pass
+            except selenium.common.exceptions.NoSuchWindowException:
                 pass
     while True:
         downloaded = True
         for root, dirs, files in os.walk(downloads_folder):
-            if len(files) != len(papers):
+            if len(files) + len(unavailable) != len(papers):
                 downloaded = False
                 break
             for file in files:
@@ -206,3 +218,8 @@ if ddmDocTitle.text == article_title:
         if information != None:
             rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
                                                 information[2],information[3],information[4],information[5]), 0)
+    if len(unavailable) != 0:
+        file = open(downloads_folder + "/Unavailable.txt", "w")
+        for url in unavailable:
+            file.write(url + "\n")
+        file.close()
