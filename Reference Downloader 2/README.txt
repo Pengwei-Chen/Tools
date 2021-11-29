@@ -1,9 +1,7 @@
 引文下载小工具
 功能：利用Scopus数据库批量下载文献所有引文
 
-环境配置：Chrome浏览器、Python
-1.	下载Chrome浏览器
-2.	安装Python，一定要勾选Add Python to PATH！！！
+环境配置：Chrome浏览器
 
 使用：
 1.	运行Reference Downloader的可执行文件
@@ -13,6 +11,5 @@
 5.	下载过程中可能会出现无法避免的网络波动，导致下载中断或者进度条停滞。只剩下一个页签之后，打开chrome的下载页，检查一下。Network Error点击Resume；进度条卡住点击下载的链接，待新下载被创建后取消原先的下载；Virus Scan Failed和Deleted说明已经下完并且重命名了
 6.	Paper会被下载到Python脚本同一目录下的相应文件夹中，并默认被重命名为“年份+第一作者”，Sci Hub上没有的文献会被放在unavailable.txt里
 
-P.S. 推荐一下每日健康打卡脚本，以及更稳定但是对打包和重命名不友好的旧版
+P.S. 推荐一下每日健康打卡脚本
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
-https://github.com/Pengwei-Chen/Tools/tree/main/Reference%20Downloader
