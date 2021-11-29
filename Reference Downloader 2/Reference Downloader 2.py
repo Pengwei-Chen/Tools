@@ -191,7 +191,7 @@ if ddmDocTitle.text == article_title:
             except selenium.common.exceptions.NoSuchWindowException:
                 pass
     start_time = time.time()
-    while time.time() - start_time <= 120:
+    while time.time() - start_time <= 300:
         downloaded = True
         for root, dirs, files in os.walk(downloads_folder):
             if len(files) + len(unavailable) != len(papers):
