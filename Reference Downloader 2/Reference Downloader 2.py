@@ -133,6 +133,7 @@ if ddmDocTitle.text == article_title:
     time.sleep(0.3)
     references = driver.find_elements_by_class_name("refCont")
     papers = {}
+    special_filename_to_half_doi = {}
     unavailable = []
     for reference in references:
         doi = re.search(r"doi: (.*)", reference.text)
@@ -185,7 +186,14 @@ if ddmDocTitle.text == article_title:
                         try:
                             driver.find_element_by_xpath('//*[@id="buttons"]/ul/li[2]/a').click()
                         except:
-                            driver.find_element_by_xpath('//*[@id="buttons"]/button').click()
+                            download_button = driver.find_element_by_xpath('//*[@id="buttons"]/button')
+                            filename = re.search(r"/([A-Za-z0-9]+?).pdf", download_button.get_attribute("onclick"))
+                            if filename != None:
+                                filename = filename.group(1).lower()
+                                half_doi = driver.current_url.lstrip("https://sci-hub.mksa.top/").split("/")[1].lower()
+                                half_doi = half_doi.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
+                                special_filename_to_half_doi[filename] = half_doi
+                            download_button.click()
                         driver.close()
                 except:
                     pass
@@ -199,7 +207,8 @@ if ddmDocTitle.text == article_title:
                     pass
             except selenium.common.exceptions.NoSuchWindowException:
                 pass
-    while True:
+    start_time = time.time()
+    while time.time() - start_time <= 60:
         downloaded = True
         for root, dirs, files in os.walk(downloads_folder):
             if len(files) + len(unavailable) != len(papers):
@@ -215,6 +224,8 @@ if ddmDocTitle.text == article_title:
     for file in files:
         key = re.sub(r" \(\d+\)", "", file[:-4]).replace(r"%", r"%25").lower()
         information = papers.get(key)
+        if information == None:
+            information = papers.get(special_filename_to_half_doi.get(key))
         if information != None:
             rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
                                                 information[2],information[3],information[4],information[5]), 0)
