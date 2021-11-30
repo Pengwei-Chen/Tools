@@ -3,7 +3,12 @@
 
 环境配置
 Windows: Chrome浏览器
-Mac: Chrome浏览器、Python、 能跑Python的编辑器、selenium和requests
+Mac: Chrome浏览器、Python、 Visual Studio Code、selenium和requests
+For Mac Only:
+1.	Python 3: https://www.python.org/downloads/macos/
+2.	Visual Studio Code: https://code.visualstudio.com/
+3.	打开Terminal，执行 "Python3 -m pip install selenium" 和 "Python3 -m pip install requests"
+4.	用Visual Studio Code打开Python文件，安装Python插件，点击右上角运行
 
 使用：
 1.	运行Reference Downloader
