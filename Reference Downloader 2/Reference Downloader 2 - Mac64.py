@@ -105,7 +105,7 @@ if driver_version != chrome_version:
     unzip_driver(path)
 
 options = webdriver.ChromeOptions()
-prefs = {"download.default_directory" : downloads_folder.replace("/", "\\")}
+prefs = {"download.default_directory" : downloads_folder}
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options = options)
 driver.get("https://www.scopus.com/search/form.uri?display=basic#basic")
