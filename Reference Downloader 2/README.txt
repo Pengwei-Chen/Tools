@@ -1,10 +1,12 @@
 引文下载小工具
 功能：利用Scopus数据库批量下载文献所有引文
 
-环境配置：Chrome浏览器
+环境配置
+Windows: Chrome浏览器
+Mac: Chrome浏览器、Python、 能跑Python的编辑器、selenium和requests
 
 使用：
-1.	运行Reference Downloader的可执行文件
+1.	运行Reference Downloader
 2.	复制文章标题到控制台（Console），按两下回车，复制的内容有换行没有关系，但有特殊排版导致“Keyboard Interrupt”需要复制到微信等聊天软件的聊天框，再复制出来
 3.	脚本会自动检查Chrome Driver更新，在Scopus数据库中查找文献（输入的文献没找到会停在这一步），获取reference list，并拼凑Sci Hub链接进行下载，没有doi的paper或书不会被下载
 4.	拼凑的下载链接出现404或者未找到文献是正常现象，等一会儿就行了
