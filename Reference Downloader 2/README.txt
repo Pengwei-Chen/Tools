@@ -18,5 +18,5 @@ For Mac Only:
 5.	下载过程中可能会出现无法避免的网络波动，导致下载中断或者进度条停滞。只剩下一个页签之后，打开chrome的下载页，检查一下。Network Error点击Resume；Virus Scan Failed和Deleted说明已经下完并且重命名了
 6.	Paper会被下载到Python脚本同一目录下的相应文件夹中，并默认被重命名为“年份+第一作者”，Sci Hub上没有的文献会被放在unavailable.txt里
 
-P.S. 推荐一下每日健康打卡脚本
+P.S. 推荐一下每日健康打卡脚本 (Windows)
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
