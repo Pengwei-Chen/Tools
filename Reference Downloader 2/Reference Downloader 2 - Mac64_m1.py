@@ -26,7 +26,7 @@ downloads_folder = directory + article_title
 
 #PDF Filename
 #Available: title, first_author, first_author_surname, year
-def generate_file_name(title, first_author, first_author_surname, year, journal):
+def generate_file_name(order_in_reference_list, title, first_author, first_author_surname, year, journal):
     return year + "_" + first_author
 ###########################################################################################
 
@@ -122,7 +122,7 @@ while True:
         break
 found = False
 for ddmDocTitle in ddmDocTitles:
-    if ddmDocTitle.text == article_title:
+    if ddmDocTitle.text.lower() == article_title.lower():
         found = True
         break
 if found:
@@ -133,7 +133,9 @@ if found:
     papers = {}
     special_filename_to_half_doi = {}
     unavailable = []
+    order_in_reference_list = 0
     for reference in references:
+        order_in_reference_list += 1
         doi = re.search(r"doi: (.*)", reference.text)
         if doi != None:
             doi = doi.group(1).lower()
@@ -163,9 +165,9 @@ if found:
             else:
                 year = ""
                 journal = ""
-            papers[half_doi] = [doi, title, first_author, first_author_surname, year, journal]
+            papers[half_doi] = [order_in_reference_list, doi, title, first_author, first_author_surname, year, journal]
     for paper in list(papers.values()):
-        driver.execute_script('window.open("https://sci.bban.top/pdf/' + paper[0] + '.pdf?download=true")')
+        driver.execute_script('window.open("https://sci.bban.top/pdf/' + paper[1] + '.pdf?download=true")')
     driver.implicitly_wait(0.5)
     time.sleep(5)
     while True:
@@ -181,6 +183,11 @@ if found:
                         new_url = "https://sci-hub.mksa.top/" + driver.current_url.lstrip("https://sci.bban.top/pdf/").rstrip('.pdf?download=true")')
                         new_url = new_url.replace(r"%252F", "/").replace("%2528", "(").replace("%2529", ")")
                         driver.get(new_url)
+                        try:
+                            driver.find_element_by_xpath('//*[@id="details-button"]').click()
+                            driver.find_element_by_xpath('//*[@id="proceed-link"]').click()
+                        except:
+                            pass
                         try:
                             driver.find_element_by_xpath('//*[@id="buttons"]/ul/li[2]/a').click()
                         except:
@@ -226,7 +233,7 @@ if found:
             information = papers.get(special_filename_to_half_doi.get(key))
         if information != None:
             rename(downloads_folder + "/" + file, downloads_folder + "/" + generate_file_name(information[1],
-                                                information[2],information[3],information[4],information[5]), 0)
+                                                information[2], information[3], information[4], information[5], information[6]), 0)
     if len(unavailable) != 0:
         file = open(downloads_folder + "/Unavailable.txt", "w")
         for url in unavailable:
