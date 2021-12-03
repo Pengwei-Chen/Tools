@@ -1,0 +1,8 @@
+# "order_in_reference_list"
+# "title"
+# "first_author"
+# "first_author_surname"
+# "year"
+# "journal"
+
+"year"_"first_author"

@@ -4,7 +4,7 @@
 环境配置
 Windows: Chrome浏览器
 Mac: Chrome浏览器、Python、 Visual Studio Code、selenium和requests
-For Mac Only:
+# For Mac Only:
 1.	Python 3: https://www.python.org/downloads/macos/
 2.	Visual Studio Code: https://code.visualstudio.com/
 3.	打开Terminal，执行 "Python3 -m pip install selenium" 和 "Python3 -m pip install requests"
@@ -17,6 +17,11 @@ For Mac Only:
 4.	拼凑的下载链接出现404或者未找到文献是正常现象，等一会儿就行了
 5.	下载过程中可能会出现无法避免的网络波动，导致下载中断或者进度条停滞。只剩下一个页签之后，打开chrome的下载页，检查一下。Network Error点击Resume；Virus Scan Failed和Deleted说明已经下完并且重命名了
 6.	Paper会被下载到Python脚本同一目录下的相应文件夹中，并默认被重命名为“年份+第一作者”，Sci Hub上没有的文献会被放在unavailable.txt里
+
+自定义PDF文件命名
+PDF File Name Config.txt中，带“#”号的行是可选命名选项，最后一行是文件名形式
+例如，默认的"year"_"first_author"代表年份+第一作者，中间用“_”连接，如2021_Chen, P.
+你还可以选择以文章在Reference List中的顺序、标题、第一作者、第一作者的姓、年份、期刊等方式命名
 
 P.S. 推荐一下每日健康打卡脚本 (Windows)
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
