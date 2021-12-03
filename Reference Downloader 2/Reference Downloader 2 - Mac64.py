@@ -87,7 +87,7 @@ def rename(name1, name2, n):
 
 url = 'http://npm.taobao.org/mirrors/chromedriver/'
 chrome_version = get_chrome_version()
-os.environ["PATH"] = os.environ.get("PATH") + ":" + directory.rstrip("/")
+os.environ["PATH"] = os.environ.get("PATH") + ":" + directory.rstrip("/") + ":"
 print(os.environ["PATH"])
 try:
     driver_version = get_driver_version()
@@ -105,7 +105,8 @@ if driver_version != chrome_version:
     unzip_driver(path)
 
 options = webdriver.ChromeOptions()
-prefs = {"download.default_directory" : downloads_folder}
+prefs = {"download.default_directory" : downloads_folder.replace("/", "\\"),
+        "download.prompt_for_download": False}
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options = options)
 driver.get("https://www.scopus.com/search/form.uri?display=basic#basic")
@@ -116,10 +117,15 @@ els_input.click()
 els_input.find_element_by_class_name("flex-grow-1").send_keys(article_title)
 driver.find_element_by_xpath('//*[@id="documents-tab-panel"]/div/form/div[2]/div[2]/button').click()
 while True:
-    ddmDocTitle = driver.find_element_by_xpath('//*[@id="resultDataRow0"]/td[1]/a')
-    if ddmDocTitle.text != "":
+    ddmDocTitles = driver.find_elements_by_class_name("ddmDocTitle")
+    if ddmDocTitles[0].text != "":
         break
-if ddmDocTitle.text == article_title:
+found = False
+for ddmDocTitle in ddmDocTitles:
+    if ddmDocTitle.text == article_title:
+        found = True
+        break
+if found:
     ddmDocTitle.click()
     references = driver.find_elements_by_class_name("refCont")
     time.sleep(0.3)
