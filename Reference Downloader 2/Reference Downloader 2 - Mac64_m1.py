@@ -29,8 +29,8 @@ downloads_folder = directory + article_title
 config = open(directory + "PDF File Name Config.txt", 'r')
 file_name_expression = '"year"_"first_author"'
 for line in config:
-    if line != "" and not line.startswith("#"):
-        file_name_expression = line
+    if line.strip() != "" and not line.startswith("#"):
+        file_name_expression = line.strip()
         break
 config.close()
 ###########################################################################################
