@@ -21,7 +21,7 @@ Mac: Chrome浏览器、Python、 Visual Studio Code、selenium和requests
 自定义PDF文件命名
 PDF File Name Config.txt中，带“#”号的行是可选命名选项，最后一行是文件名形式
 例如，默认的"year"_"first_author"代表年份+第一作者，中间用“_”连接，如2021_Chen, P.
-你还可以选择以文章在Reference List中的顺序、标题、第一作者、第一作者的姓、年份、期刊等方式命名
+你还可以选择以文章在reference list中的顺序、标题、第一作者、第一作者的姓、年份、期刊等方式命名
 
 P.S. 推荐一下每日健康打卡脚本 (Windows)
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
