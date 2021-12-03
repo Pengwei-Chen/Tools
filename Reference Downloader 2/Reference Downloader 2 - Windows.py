@@ -28,9 +28,11 @@ downloads_folder = directory + article_title
 #PDF Filename
 #Available: title, first_author, first_author_surname, year
 config = open(directory + "PDF File Name Config.txt", 'r')
+file_name_expression = '"year"_"first_author"'
 for line in config:
     if line != "" and not line.startswith("#"):
         file_name_expression = line
+        break
 config.close()
 ###########################################################################################
 
@@ -77,7 +79,8 @@ def generate_file_name(order_in_reference_list, title, first_author, first_autho
                 '"first_author"', first_author).replace(
                     '"first_author_surname"', first_author_surname).replace(
                         '"year"', year).replace(
-                            '"journal"', journal)
+                            '"journal"', journal).replace(
+        "/", "").replace("\\", "").replace(":", "").replace("*", "").replace("?", "").replace('"', "").replace("<", "").replace(">", "").replace("|", "")
 
 def rename(name1, name2, n):
     try:
