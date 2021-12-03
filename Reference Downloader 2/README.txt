@@ -10,7 +10,7 @@ Mac: Chrome浏览器、Python、 Visual Studio Code、selenium和requests
 3.	打开Terminal，执行 "Python3 -m pip install selenium" 和 "Python3 -m pip install requests"
 4.	用Visual Studio Code打开Python文件，添加信任，安装Python插件，点击右上角运行
 
-使用：
+使用
 1.	运行Reference Downloader
 2.	复制文章标题到控制台（Console），按两下回车，复制的内容有换行没有关系，但有特殊排版导致“Keyboard Interrupt”需要复制到微信等聊天软件的聊天框，再复制出来
 3.	脚本会自动检查Chrome Driver更新，在Scopus数据库中查找文献（输入的文献没找到会停在这一步），获取reference list，并拼凑Sci Hub链接进行下载，没有doi的paper或书不会被下载
