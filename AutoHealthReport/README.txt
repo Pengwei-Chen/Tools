@@ -38,7 +38,7 @@ pyinstaller -F -w "AutoHealthReport - User Version.py"
 
 6. 挂载到win 10自带Task Scheduler
 菜单键Task Scheduler（或者任务计划程序），右边Create Basic Task
-时间设置为When the computer starts， Program选中之前生成的exe
+时间设置为When I log on， Program选中之前生成的exe
 
 参考资料：
 1. https://zhuanlan.zhihu.com/p/127156300
