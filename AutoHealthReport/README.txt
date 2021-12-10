@@ -15,12 +15,11 @@
 下载对应自己Chrome版本的Driver
 复制exe文件到Python的Scripts文件夹中
 
-新版selenium似乎已经不需要了->
-                找到Python安装目录下\Lib\site-packages\selenium\webdriver\common
-                打开service.py，找到第76行：
-                把原来的stdin=PIPE) 改成
-                stdin=PIPE,creationflags=134217728)
-                （这一步是为了完全关闭运行时的命令行窗口）
+找到Python安装目录下\Lib\site-packages\selenium\webdriver\common
+打开service.py，找到第76行：
+把原来的stdin=PIPE) 改成
+stdin=PIPE,creationflags=134217728)
+（这一步是为了完全关闭运行时的命令行窗口）
 
 4. 抄代码
 https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
