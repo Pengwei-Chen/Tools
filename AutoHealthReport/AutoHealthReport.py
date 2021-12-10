@@ -70,13 +70,15 @@ def get_version_list(url):
         version_list.append(version)
     return version_list
 
-def get_path():
-    outstd = str(subprocess.Popen('where chromedriver',
-                                shell = True,
-                                stdin = subprocess.PIPE,
-                                stdout = subprocess.PIPE,
-                                stderr = subprocess.PIPE).stdout.readline())
-    return outstd.strip('chromedriver.exe\n')
+def download_driver(download_url):
+    file = requests.get(download_url)
+    with open(directory + "chromedriver.zip", 'wb') as zip_file:
+        zip_file.write(file.content)
+
+def unzip_driver(path):
+    f = zipfile.ZipFile(directory + "chromedriver.zip",'r')
+    for file in f.namelist():
+        f.extract(file, path)
 
 def download_driver(download_url):
     file = requests.get(download_url)
@@ -88,9 +90,36 @@ def unzip_driver(path):
     for file in f.namelist():
         f.extract(file, path)
 
+def clear_window():
+    # 找到Python安装目录下\Lib\site-packages\selenium\webdriver\common
+    # 打开service.py，找到第76行：
+    # 把原来的stdin=PIPE) 改成
+    # stdin=PIPE,creationflags=134217728)
+    # （这一步是为了完全关闭运行时的命令行窗口)
+    outstd = str(subprocess.Popen('where python',
+                                shell = True,
+                                stdin = subprocess.PIPE,
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE).stdout.readline())
+    service = outstd.lstrip("b'").rstrip(r"python.exe\\r\\n'").replace(
+        r"\\", "/") + "/Lib/site-packages/selenium/webdriver/common/service.py"
+    file_data = ""
+    with open(service, "r") as f:
+        for line in f:
+            line = line.replace("stdin=PIPE)", "stdin=PIPE,creationflags=134217728)").replace(
+                "creationflags=self.creationflags)", "creationflags=134217728)")
+            file_data += line
+    with open(service, "w") as f:
+        f.write(file_data)
+    return
+
 url = 'http://npm.taobao.org/mirrors/chromedriver/'
 chrome_version = get_chrome_version()
-driver_version = get_driver_version()
+os.environ["PATH"] = os.environ.get("PATH") + ";" + directory.rstrip("/").replace("/", "\\") + ";"
+try:
+    driver_version = get_driver_version()
+except IndexError:
+    driver_version = ""
 if driver_version != chrome_version:
     version_list = get_version_list(url)
     if chrome_version not in version_list:
@@ -99,8 +128,9 @@ if driver_version != chrome_version:
         chrome_version = version_list[version_list.index(chrome_version) - 1]
     download_url = url + chrome_version + '/chromedriver_win32.zip'
     download_driver(download_url)
-    path = get_path()
+    path = directory
     unzip_driver(path)
+    clear_window()
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
