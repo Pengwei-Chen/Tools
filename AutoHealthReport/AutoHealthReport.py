@@ -17,9 +17,9 @@ username = "3190110642"
 password = "123456789"
 
 #Enter your location here (optional)#
-province = "浙江省"
-city = "嘉兴市"
-area = "海宁市"
+province = ""
+city = ""
+area = ""
 
 #*sfyxjzxgym是否意向接种
 #*sfbyjzrq是否是不宜接种人群
@@ -38,9 +38,9 @@ area = "海宁市"
 #*sfymqjczrj本人家庭成员(包括其他密切接触人员)是否有近14日入境或近14日拟入境的情况
 #no need to check for 本人承诺
 option = [[] for i in range(6)]
-option[1] = ["sfyxjzxgym", "sfsqhzjkk","sqhzjkkys", "sfzx", "sfzgn"]
-option[2] = ["jzxgymqk", "sffrqjwdg", "sfqtyyqjwdg", "tw", "sfyqjzgc", "sfcyglq", "sfcxzysx", "sfymqjczrj"]
-option[3] = []
+option[1] = ["sfyxjzxgym", "sfsqhzjkk","sqhzjkkys", "sfzgn"]
+option[2] = ["sffrqjwdg", "sfqtyyqjwdg", "tw", "sfyqjzgc", "sfcyglq", "sfcxzysx", "sfymqjczrj", "sfzx"]
+option[3] = ["jzxgymqk"]
 option[4] = []
 option[5] = ["sfbyjzrq"]
 ##########################
@@ -63,11 +63,7 @@ def get_driver_version():
 
 def get_version_list(url):
     rep = requests.get(url).text
-    version_list = []
-    result = re.compile(r'\d.*?/</a>.*?Z').findall(rep)
-    for i in result:
-        version = re.compile(r'.*?/').findall(i)[0][:-1]
-        version_list.append(version)
+    version_list = re.compile(r'"name":"(\d+\.\d+\.\d+\.\d+)/"').findall(rep)
     return version_list
 
 def download_driver(download_url):
@@ -113,7 +109,7 @@ def clear_window():
         f.write(file_data)
     return
 
-url = 'http://npm.taobao.org/mirrors/chromedriver/'
+url = 'https://registry.npmmirror.com/-/binary/chromedriver/'
 chrome_version = get_chrome_version()
 os.environ["PATH"] = os.environ.get("PATH") + ";" + directory.rstrip("/").replace("/", "\\") + ";"
 try:
