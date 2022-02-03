@@ -58,11 +58,7 @@ def get_driver_version():
 
 def get_version_list(url):
     rep = requests.get(url).text
-    version_list = []
-    result = re.compile(r'\d.*?/</a>.*?Z').findall(rep)
-    for i in result:
-        version = re.compile(r'.*?/').findall(i)[0][:-1]
-        version_list.append(version)
+    version_list = re.compile(r'"name":"(\d+\.\d+\.\d+\.\d+)/"').findall(rep)
     return version_list
 
 def download_driver(download_url):
@@ -100,7 +96,7 @@ def rename(name1, name2, n):
         rename(name1, name2, n + 1)
             
 
-url = 'http://npm.taobao.org/mirrors/chromedriver/'
+url = 'https://registry.npmmirror.com/-/binary/chromedriver/'
 chrome_version = get_chrome_version()
 os.environ["PATH"] = os.environ.get("PATH") + ":" + directory.rstrip("/") + ":"
 print(os.environ["PATH"])
