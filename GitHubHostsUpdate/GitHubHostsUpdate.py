@@ -8,7 +8,7 @@ def get_IP_Address(url):
     return(re.findall(pattern, html)[0])
 
 def generate_text():
-    path = "C:/Windows/System32/drivers/etc/HOSTS"
+    path = "C:/Windows/System32/drivers/etc/hosts"
     hosts = open(path, 'r')
     text = hosts.read()
     hosts.close()
@@ -22,15 +22,11 @@ def generate_text():
 
 def update_Hosts(name, text):
     path = "C:/Windows/System32/drivers/etc/" + name
-    new_path = "C:/Users/Public/Documents" + name
-    new_hosts = open(new_path, 'w')
-    new_hosts.write(text)
-    new_hosts.close()
-    os.remove(path)
-    os.rename(new_path, path)
+    hosts = open(path, 'w')
+    hosts.write(text)
+    hosts.close()
 
 text = generate_text()
-update_Hosts("HOSTS", text)
-update_Hosts("tempHost", text)
+update_Hosts("hosts", text)
 
 
