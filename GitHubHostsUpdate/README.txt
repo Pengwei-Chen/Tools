@@ -1,3 +1,4 @@
+Manually
 https://zhuanlan.zhihu.com/p/107334179?ivk_sa=1024320u
 
 # update: 20220222
