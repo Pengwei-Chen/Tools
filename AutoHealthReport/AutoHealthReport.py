@@ -168,11 +168,9 @@ def getArea():
         time.sleep(1)
 getArea()
 
-browser.find_element_by_class_name("list-box").find_element_by_class_name("footers").find_elements_by_tag_name("a")[0].click()
-
 try:
-    confirm = browser.find_element_by_class_name("wapcf-btn-ok")
-    confirm.click()
+    browser.find_element_by_class_name("list-box").find_element_by_class_name("footers").find_elements_by_tag_name("a")[0].click()
+    browser.find_element_by_class_name("wapcf-btn-ok").click()
 except:
     pass
 
