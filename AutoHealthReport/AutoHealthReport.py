@@ -157,15 +157,13 @@ for i in range(len(option[0])):
 def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
-    start_time = time.time()
     while True:
         if selection.find_element_by_tag_name("input").get_attribute("value") != "":
-            break
-        elif time.time() - start_time >= 20:
-            browser.find_element_by_class_name("wapat-btn-ok").click()
-            Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
-            Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
-            Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
+            if selection.find_element_by_tag_name("input").get_attribute("value") == '{"type":"error","message":"Get ipLocation failed.Get geolocation failed.","info":"FAILED","status":0}':
+                browser.find_element_by_class_name("wapat-btn-ok").click()
+                Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
+                Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
+                Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
             break
         time.sleep(1)
 getArea()
