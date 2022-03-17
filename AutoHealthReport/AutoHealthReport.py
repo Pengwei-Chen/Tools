@@ -76,16 +76,6 @@ def unzip_driver(path):
     for file in f.namelist():
         f.extract(file, path)
 
-def download_driver(download_url):
-    file = requests.get(download_url)
-    with open(directory + "chromedriver.zip", 'wb') as zip_file:
-        zip_file.write(file.content)
-
-def unzip_driver(path):
-    f = zipfile.ZipFile(directory + "chromedriver.zip",'r')
-    for file in f.namelist():
-        f.extract(file, path)
-
 def clear_window():
     # 找到Python安装目录下\Lib\site-packages\selenium\webdriver\common
     # 打开service.py，找到第76行：
