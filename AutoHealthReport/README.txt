@@ -14,7 +14,7 @@ https://github.com/Pengwei-Chen/Tools/tree/main/AutoHealthReport
 3. 生成无窗口的可执行文件
 打开cmd，执行pip install pyinstaller
 cd到脚本所在的目录
-pyinstaller -F -w "AutoHealthReport - User Version.py"
+pyinstaller -F -w "AutoHealthReport.py"
 复制生成的dist文件夹中的exe，保存到一个能长期保存的路径
 
 4. 挂载到win 11自带Task Scheduler
