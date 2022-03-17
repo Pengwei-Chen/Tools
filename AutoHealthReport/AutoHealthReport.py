@@ -158,7 +158,6 @@ def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
     while True:
-        print(selection.find_element_by_tag_name("input").get_attribute("value"))
         if selection.find_element_by_tag_name("input").get_attribute("value") != "":
             if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
                 browser.find_element_by_class_name("wapat-btn-ok").click()
