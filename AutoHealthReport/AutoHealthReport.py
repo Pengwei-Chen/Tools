@@ -158,8 +158,9 @@ def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
     while True:
+        print(selection.find_element_by_tag_name("input").get_attribute("value"))
         if selection.find_element_by_tag_name("input").get_attribute("value") != "":
-            if selection.find_element_by_tag_name("input").get_attribute("value") == '{"type":"error","message":"Get ipLocation failed.Get geolocation failed.","info":"FAILED","status":0}':
+            if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
                 browser.find_element_by_class_name("wapat-btn-ok").click()
                 Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
                 Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
@@ -168,8 +169,9 @@ def getArea():
         time.sleep(1)
 getArea()
 
+browser.find_element_by_class_name("list-box").find_element_by_class_name("footers").find_elements_by_tag_name("a")[0].click()
+
 try:
-    browser.find_element_by_class_name("list-box").find_element_by_class_name("footers").find_elements_by_tag_name("a")[0].click()
     browser.find_element_by_class_name("wapcf-btn-ok").click()
 except:
     pass
