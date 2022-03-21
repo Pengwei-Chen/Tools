@@ -1,5 +1,5 @@
 from selenium import webdriver
-# from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.select import Select
 import time
 import requests
 import re
@@ -17,9 +17,9 @@ username = "3190110642"
 password = "123456789"
 
 # Enter your location here (optional) #
-# province = "浙江省"
-# city = "嘉兴市"
-# area = "海宁市"
+province = "浙江省"
+city = "嘉兴市"
+area = "海宁市"
 
 # *sfyxjzxgym是否意向接种
 # *sfbyjzrq是否是不宜接种人群
@@ -145,27 +145,23 @@ for i in range(1, len(option)):
 for i in range(len(option[0])):
     browser.find_element_by_name(option[0][i]).find_elements_by_tag_name("span")[0].click()
 
-# def getArea():
-#     selection = browser.find_element_by_name("area")
-#     selection.click()
-#     while True:
-#         if selection.find_element_by_tag_name("input").get_attribute("value") != "":
-#             if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
-#                 browser.find_element_by_class_name("wapat-btn-ok").click()
-#                 Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
-#                 Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
-#                 Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
-#             break
-#         time.sleep(1)
+def forceLocation():
+    browser.find_element_by_class_name("wapat-btn-ok").click()
+    browser.execute_script('document.getElementsByName("ip")[0].style.display="block"')
+    Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
+    Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
+    Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
 
 def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
     while True:
         if selection.find_element_by_tag_name("input").get_attribute("value") != "":
+            if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
+                forceLocation()
             break
         if browser.find_element_by_class_name("wapat-title").get_attribute("textContent") == "获取位置信息失败，请检查定位服务是否开启！":
-            browser.find_element_by_class_name("wapat-btn-ok").click()
+            forceLocation()
             break
         time.sleep(1)
 getArea()
