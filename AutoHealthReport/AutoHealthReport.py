@@ -155,12 +155,15 @@ def forceLocation():
 def getArea():
     selection = browser.find_element_by_name("area")
     selection.click()
-    if selection.find_element_by_tag_name("input").get_attribute("value") != "":
-        if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
+    while True:
+        if selection.find_element_by_tag_name("input").get_attribute("value") != "":
+            if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
+                forceLocation()
+            break
+        if browser.find_element_by_class_name("wapat-title").get_attribute("textContent") == "获取位置信息失败，请检查定位服务是否开启！":
             forceLocation()
-        return
-    if browser.find_element_by_class_name("wapat-title").get_attribute("textContent") == "获取位置信息失败，请检查定位服务是否开启！":
-        forceLocation()
+            break
+    time.sleep(1)
 
 getArea()
 
