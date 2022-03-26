@@ -63,7 +63,7 @@ def get_driver_version():
 
 def get_version_list(url):
     rep = requests.get(url).text
-    version_list = re.compile(r'"name":"(\d+\.\d+\.\d+\.\d+)/"').findall(rep)
+    version_list = re.compile(r'<Key>(\d+\.\d+\.\d+\.\d+)/chromedriver_win32.zip</Key>').findall(rep)
     return version_list
 
 def download_driver(download_url):
@@ -99,7 +99,7 @@ def clear_window():
         f.write(file_data)
     return
 
-url = 'https://registry.npmmirror.com/-/binary/chromedriver/'
+url = 'https://chromedriver.storage.googleapis.com/'
 chrome_version = get_chrome_version()
 os.environ["PATH"] = os.environ.get("PATH") + ";" + directory.rstrip("/").replace("/", "\\") + ";"
 try:
@@ -136,7 +136,6 @@ except:
     browser.find_element_by_id("dl").click()
 
 # Report
-browser.find_element_by_class_name("wapat-btn-ok").click()
 option[0] = ["sfqrxxss"] #Agreement at the end, no need to change
 for i in range(1, len(option)):
     for j in range(len(option[i])):
