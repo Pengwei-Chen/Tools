@@ -30,6 +30,7 @@ area = "海宁市"
 # sfyqjzgc今日是否被当地管理部门要求在集中隔离点医学观察
 # sfcyglq今日是否居家隔离观察（居家非隔离状态填否）
 # sfcxzysx是否有任何与疫情相关的，值得注意的情况
+# campus所在校区
 # sfsqhzjkk是否已经申领校区所在地健康码
 # sqhzjkkys今日申领校区所在地健康码的颜色
 # *sfzx今日是否在校
@@ -37,12 +38,13 @@ area = "海宁市"
 # no need to check for 所在地点（请打开手机位置功能，并在手机权限设置中选择允许访问位置信息）
 # *sfymqjczrj本人家庭成员(包括其他密切接触人员)是否有近14日入境或近14日拟入境的情况
 # no need to check for 本人承诺
-option = [[] for i in range(6)]
-option[1] = ["sfyxjzxgym", "sfsqhzjkk","sqhzjkkys", "sfzgn"]
+option = [[] for i in range(7)]
+option[1] = ["sfyxjzxgym", "sfsqhzjkk", "sqhzjkkys", "sfzgn"]
 option[2] = ["sffrqjwdg", "sfqtyyqjwdg", "tw", "sfyqjzgc", "sfcyglq", "sfcxzysx", "sfymqjczrj", "sfzx"]
 option[3] = []
 option[4] = ["jzxgymqk"]
 option[5] = ["sfbyjzrq"]
+option[6] = ["campus"]
 ##########################
 
 
@@ -159,9 +161,12 @@ def getArea():
             if selection.find_element_by_tag_name("input").get_attribute("value").startswith('{"type":"error"'):
                 forceLocation()
             break
-        if browser.find_element_by_class_name("wapat-title").get_attribute("textContent") == "获取位置信息失败，请检查定位服务是否开启！":
-            forceLocation()
-            break
+        try:
+            if browser.find_element_by_class_name("wapat-title").get_attribute("textContent") == "获取位置信息失败，请检查定位服务是否开启！":
+                forceLocation()
+                break
+        except:
+            pass
     time.sleep(1)
 
 getArea()
