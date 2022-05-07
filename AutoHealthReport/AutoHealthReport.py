@@ -11,42 +11,44 @@ import subprocess
 
 ##########################
 # Enter your username here #
-username = "3190110642"
+username = ""
 
 # Enter your password here #
-password = "123456789"
+password = ""
 
 # Enter your location here (optional) #
-province = "浙江省"
-city = "嘉兴市"
-area = "海宁市"
+province = ""
+city = ""
+area = ""
 
-# *sfyxjzxgym是否意向接种
-# *sfbyjzrq是否是不宜接种人群
-# *jzxgymqk当前接种情况
-# sffrqjwdg今日是否因发热请假未到岗（教职工）或未返校（学生）
-# sfqtyyqjwdg今日是否因发热外的其他原因请假未到岗（教职工）或未返校（学生）
-# tw今日是否有发热症状（高于37.2 ℃）
-# sfyqjzgc今日是否被当地管理部门要求在集中隔离点医学观察
-# sfcyglq今日是否居家隔离观察（居家非隔离状态填否）
-# sfcxzysx是否有任何与疫情相关的，值得注意的情况
+# sfzx今日是否在校
 # campus所在校区
-# sfsqhzjkk是否已经申领校区所在地健康码
-# sqhzjkkys今日申领校区所在地健康码的颜色
-# *sfzx今日是否在校
-# sfzgn所在地点
-# no need to check for 所在地点（请打开手机位置功能，并在手机权限设置中选择允许访问位置信息）
-# *sfymqjczrj本人家庭成员(包括其他密切接触人员)是否有近14日入境或近14日拟入境的情况
+# sqhzjkkys今日申领健康码的状态？
+# tw今日是否有发热症状（高于37.2 ℃）
+# sfcxzysx今日是否有涉及涉疫情的管控措施
+# sfjcbh是否有与新冠疫情确诊人员或密接人员有接触的情况? 
 # no need to check for 本人承诺
+
 option = [[] for i in range(7)]
-option[1] = ["sfyxjzxgym", "sfsqhzjkk", "sqhzjkkys", "sfzgn"]
-option[2] = ["sffrqjwdg", "sfqtyyqjwdg", "tw", "sfyqjzgc", "sfcyglq", "sfcxzysx", "sfymqjczrj", "sfzx"]
+option[1] = ["sfzx", "sqhzjkkys"]
+option[2] = ["tw", "sfcxzysx", "sfjcbh"]
 option[3] = []
-option[4] = ["jzxgymqk"]
-option[5] = ["sfbyjzrq"]
+option[4] = []
+option[5] = []
 option[6] = ["campus"]
 ##########################
 
+# sfyxjzxgym是否意向接种
+# sfbyjzrq是否是不宜接种人群
+# jzxgymqk当前接种情况
+# sffrqjwdg今日是否因发热请假未到岗（教职工）或未返校（学生）
+# sfqtyyqjwdg今日是否因发热外的其他原因请假未到岗（教职工）或未返校（学生）
+# sfyqjzgc今日是否被当地管理部门要求在集中隔离点医学观察
+# sfcyglq今日是否居家隔离观察（居家非隔离状态填否）
+# sfsqhzjkk是否已经申领校区所在地健康码
+# sfzgn所在地点
+# no need to check for 所在地点（请打开手机位置功能，并在手机权限设置中选择允许访问位置信息）
+# sfymqjczrj本人家庭成员(包括其他密切接触人员)是否有近14日入境或近14日拟入境的情况
 
 directory = repr(os.path.dirname(os.path.realpath(sys.argv[0]))).strip("'").replace("\\\\", "/") + "/"
 
@@ -83,7 +85,7 @@ def clear_window():
     # 打开service.py，找到第76行：
     # 把原来的stdin=PIPE) 改成
     # stdin=PIPE,creationflags=134217728)
-    # （这一步是为了完全关闭运行时的命令行窗口)
+    # 这一步是为了完全关闭运行时的命令行窗口
     outstd = str(subprocess.Popen('where python',
                                 shell = True,
                                 stdin = subprocess.PIPE,
@@ -148,10 +150,10 @@ for i in range(len(option[0])):
 
 def forceLocation():
     browser.find_element_by_class_name("wapat-btn-ok").click()
-    browser.execute_script('document.getElementsByName("ip")[0].style.display="block"')
-    Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
-    Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
-    Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
+    # browser.execute_script('document.getElementsByName("ip")[0].style.display="block"')
+    # Select(browser.find_element_by_class_name("hcqbtn-danger")).select_by_value(province)
+    # Select(browser.find_element_by_class_name("hcqbtn-warning")).select_by_value(city)
+    # Select(browser.find_element_by_class_name("hcqbtn-primary")).select_by_value(area)
 
 def getArea():
     selection = browser.find_element_by_name("area")
